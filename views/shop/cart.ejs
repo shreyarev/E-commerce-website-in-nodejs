@@ -1,0 +1,56 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
+    <link rel="stylesheet" href="/css/forms.css">
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            <!-- <h1 style="color: blueviolet; padding: 0 0 0 35%;">WELCOME TO THE CART</h1> -->
+            <main>
+                <% if (products.length > 0) { %>
+                    <div class="grid">
+                        <% for (let prod of products ){ %>
+                            <article class="card product-item">
+                                <header class="card__header">
+                                    <h1 class="product__title">
+                                        <%= prod.productId.title %>
+                                    </h1>
+                                </header>
+                                <div class="card__image">
+                                    <img src="<%= prod.productId.imageUrl %>" alt="<%= prod.productId.title %>">
+                                </div>
+                                <div class="card__content">
+                                    <h2 class="product__price">$<%= prod.productId.price%> </h2>
+                                    <p class="product__description">
+                                        Quantity: <%= prod.quantity%>
+                                    </p>
+                                    <p class="product__description">
+                                        <%= prod.description %>
+                                    </p>
+                                    <form action="/delete-cart-item" method="post">
+                                        <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                                        <input type="hidden" name="productId" value="<%=prod.productId._id%>">
+                                        <div class="centered" style="padding: 5px 0;">
+                                            <button type="submit" class="btn">Delete</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </article>
+                            <% } %>
+                    </div>
+                    <hr>
+                    <div class="centered">
+                        <!-- <form action="/create-order" method="post">
+                            <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                            <button type="submit" class="btn">Order now</button>
+                        </form> -->
+                        <a class="btn" href="/checkout">Order now</a>
+                    </div>
+                    <% } else { %>
+                        <h1>No products in cart </h1>
+                        <% } %>
+            </main>
+    </body>
+
+    </html>
